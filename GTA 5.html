@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Surprise!</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #000;
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+        }
+        /* Container for the Rick Roll stage */
+        #rickroll-stage {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+        }
+        iframe {
+            width: 80%;
+            height: 70%;
+            border: none;
+        }
+        .fake-close-btn {
+            margin-top: 20px;
+            padding: 15px 30px;
+            background-color: #ff0000;
+            color: white;
+            border: none;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        /* Hidden Meme Stage */
+        #meme-stage {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #000;
+            z-index: 9999;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: red;
+            text-align: center;
+        }
+        #meme-stage h1 {
+            font-size: 5rem;
+            text-transform: uppercase;
+            font-style: italic;
+            text-shadow: 3px 3px 0px #fff;
+            margin-bottom: 30px;
+        }
+        .real-close-btn {
+            padding: 15px 30px;
+            background-color: #fff;
+            color: #000;
+            border: 2px solid red;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- STAGE 1: Rick Roll Video -->
+    <div id="rickroll-stage">
+        <!-- Note: User must interact with the page for unmuted autoplay to work reliably -->
+        <iframe id="rick-video" src="https://youtube.com" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+        <button class="fake-close-btn" onclick="triggerMeme()">Close Website</button>
+    </div>
+
+    <!-- STAGE 2: The Persona 5 Meme Screen -->
+    <div id="meme-stage">
+        <h1>YOU'LL NEVER SEE IT COMING!!</h1>
+        <button class="real-close-btn" onclick="closeNormally()">Okay, close for real now</button>
+    </div>
+
+    <!-- Audio Element for Persona 5 "Last Surprise" Song -->
+    <!-- Replace URL below with a direct link to your own hosted .mp3 if needed -->
+    <audio id="meme-audio" src="https://soundhelix.com" preload="auto"></audio>
+
+    <script>
+        const rickStage = document.getElementById('rickroll-stage');
+        const memeStage = document.getElementById('meme-stage');
+        const memeAudio = document.getElementById('meme-audio');
+        const rickVideo = document.getElementById('rick-video');
+
+        function triggerMeme() {
+            // 1. Hide the Rick Roll video so it stops playing visually
+            rickStage.style.display = 'none';
+            rickVideo.src = ""; // Hard stops the youtube audio
+            
+            // 2. Show the "You'll never see it coming" meme screen
+            memeStage.style.display = 'flex';
+            
+            // 3. Blast the song
+            memeAudio.currentTime = 45; // Jumps closer to the "You'll never see it coming" chorus drop
+            memeAudio.play().catch(error => {
+                console.log("Audio failed to play because the user hasn't clicked the page yet.");
+            });
+        }
+
+        function closeNormally() {
+            // Closes the window. Note: This only works if the user opened this via a script link, 
+            // otherwise modern browsers require them to manually click the X on their tab.
+            window.close();
+            
+            // Fallback for regular tabs: just show a blank safe screen
+            document.body.innerHTML = "<h1 style='color:white; text-align:center; margin-top:20%;'>You can safely close this tab now!</h1>";
+        }
+    </script>
+</body>
+</html>
